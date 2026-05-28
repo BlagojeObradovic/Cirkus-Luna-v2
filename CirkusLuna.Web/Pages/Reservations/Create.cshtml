@@ -1,0 +1,94 @@
+@page
+@model CirkusLuna.Web.Pages.Reservations.CreateModel
+@{
+    ViewData["Title"] = "Ny Reservation";
+}
+
+<div class="page-header">
+    <div class="container-xl">
+        <h1><i class="bi bi-ticket-perforated me-2"></i>Reserver Billetter</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a asp-page="/Index">Forside</a></li>
+                <li class="breadcrumb-item"><a asp-page="Index">Reservationer</a></li>
+                <li class="breadcrumb-item active">Ny Reservation</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container-xl pb-5">
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-circus alert-danger alert-dismissible fade show mb-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>@TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="circus-card card">
+                <div class="card-header"><i class="bi bi-ticket me-2"></i>Reservationsdetaljer</div>
+                <div class="card-body p-4">
+                    <form method="post" class="circus-form">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label asp-for="Input.CustomerId" class="form-label">Kunde *</label>
+                                <select asp-for="Input.CustomerId" class="form-select">
+                                    <option value="">– Vælg kunde –</option>
+                                    @foreach (var c in Model.Customers)
+                                    {
+                                        <option value="@c.Id">@c.FullName – @c.Email</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="Input.CustomerId" class="text-danger small"></span>
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="Input.PerformanceId" class="form-label">Forestilling *</label>
+                                <select asp-for="Input.PerformanceId" class="form-select">
+                                    <option value="">– Vælg forestilling –</option>
+                                    @foreach (var p in Model.FuturePerformances)
+                                    {
+                                        <option value="@p.Id">@p.City?.Name – @p.DateDisplay kl. @p.TimeDisplay (Alm: @p.AvailableRegularSeats ledige | VIP: @p.AvailableVipSeats ledige)</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="Input.PerformanceId" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Input.TicketTypeId" class="form-label">Billettype *</label>
+                                <select asp-for="Input.TicketTypeId" class="form-select">
+                                    <option value="">– Vælg billettype –</option>
+                                    @foreach (var t in Model.TicketTypes)
+                                    {
+                                        <option value="@t.Id">@t.CategoryName – @t.Name (@t.Price kr)</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="Input.TicketTypeId" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Input.NumberOfTickets" class="form-label">Antal billetter *</label>
+                                <input asp-for="Input.NumberOfTickets" type="number" min="1" max="20" class="form-control" />
+                                <span asp-validation-for="Input.NumberOfTickets" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <!-- Info box -->
+                        <div class="alert alert-circus alert-warning mt-3">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Reservationer kan kun foretages til fremtidige forestillinger. Systemet sikrer automatisk, at der er ledige pladser.
+                        </div>
+
+                        <hr class="circus-divider" />
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-circus-primary">
+                                <i class="bi bi-check-circle me-1"></i>Bekræft Reservation
+                            </button>
+                            <a asp-page="Index" class="btn btn-outline-secondary">Annuller</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

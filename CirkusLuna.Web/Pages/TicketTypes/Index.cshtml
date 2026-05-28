@@ -1,0 +1,71 @@
+@page
+@model CirkusLuna.Web.Pages.TicketTypes.IndexModel
+@{
+    ViewData["Title"] = "Billettyper";
+}
+
+<div class="page-header">
+    <div class="container-xl">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1><i class="bi bi-tag me-2"></i>Billettyper & Priser</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Forside</a></li>
+                        <li class="breadcrumb-item active">Billettyper</li>
+                    </ol>
+                </nav>
+            </div>
+            <a asp-page="Create" class="btn btn-circus-gold"><i class="bi bi-plus-circle me-1"></i>Ny Billettype</a>
+        </div>
+    </div>
+</div>
+
+<div class="container-xl pb-5">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-circus alert-success alert-dismissible fade show mb-4">
+            <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row g-4">
+        @for (int i = 0; i < Model.TicketTypes.Count; i++)
+        {
+            var t = Model.TicketTypes[i];
+            string icon = t.Category == CirkusLuna.ClassLibrary.Models.TicketCategory.VIP ? "👑" :
+                          t.Category == CirkusLuna.ClassLibrary.Models.TicketCategory.Children ? "🎠" : "🎟️";
+            string badgeClass = t.Category == CirkusLuna.ClassLibrary.Models.TicketCategory.VIP ? "badge-circus-vip" :
+                                t.Category == CirkusLuna.ClassLibrary.Models.TicketCategory.Children ? "badge-circus-children" : "badge-circus-regular";
+
+            <div class="col-md-4">
+                <div class="circus-card card h-100">
+                    <div class="card-header @(t.Category == CirkusLuna.ClassLibrary.Models.TicketCategory.VIP ? "gold" : "")">
+                        <i class="bi bi-tag me-2"></i>@t.CategoryName
+                    </div>
+                    <div class="card-body text-center p-4">
+                        <div style="font-size:3rem;margin-bottom:0.5rem;">@icon</div>
+                        <h4 style="font-family:'Playfair Display',serif;">@t.Name</h4>
+                        <div class="display-5 fw-bold my-3" style="color:var(--circus-red);">@t.Price.ToString("N0") <small style="font-size:1rem;">kr</small></div>
+                        <p class="text-muted small">@t.Description</p>
+                        <span class="@badgeClass">@t.CategoryName</span>
+                    </div>
+                    <div class="card-footer bg-transparent d-flex gap-2">
+                        <a asp-page="Edit" asp-route-id="@t.Id" class="btn btn-sm btn-circus-outline w-50"><i class="bi bi-pencil me-1"></i>Rediger</a>
+                        <a asp-page="Delete" asp-route-id="@t.Id" class="btn btn-sm btn-outline-danger w-50"><i class="bi bi-trash me-1"></i>Slet</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (!Model.TicketTypes.Any())
+    {
+        <div class="empty-state">
+            <div class="empty-icon">🎟️</div>
+            <h5>Ingen billettyper oprettet</h5>
+            <a asp-page="Create" class="btn btn-circus-primary">Opret billettype</a>
+        </div>
+    }
+</div>

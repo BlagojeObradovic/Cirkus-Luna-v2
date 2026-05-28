@@ -1,0 +1,62 @@
+@page "{id:int}"
+@model CirkusLuna.Web.Pages.Employees.EditModel
+@{ ViewData["Title"] = "Rediger Medarbejder"; }
+
+<div class="page-header"><div class="container-xl"><h1><i class="bi bi-pencil me-2"></i>Rediger Medarbejder</h1></div></div>
+<div class="container-xl pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="circus-card card">
+                <div class="card-header"><i class="bi bi-person-badge me-2"></i>Rediger Oplysninger</div>
+                <div class="card-body p-4">
+                    <form method="post" class="circus-form">
+                        <input type="hidden" asp-for="Employee.Id" />
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="Employee.FirstName" class="form-label">Fornavn *</label>
+                                <input asp-for="Employee.FirstName" class="form-control" />
+                                <span asp-validation-for="Employee.FirstName" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Employee.LastName" class="form-label">Efternavn *</label>
+                                <input asp-for="Employee.LastName" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Employee.Email" class="form-label">Email</label>
+                                <input asp-for="Employee.Email" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Employee.Phone" class="form-label">Telefon</label>
+                                <input asp-for="Employee.Phone" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Employee.Role" class="form-label">Rolle</label>
+                                <select asp-for="Employee.Role" class="form-select">
+                                    @foreach (var role in Enum.GetValues<CirkusLuna.ClassLibrary.Models.EmployeeRole>())
+                                    {
+                                        <option value="@((int)role)">@(new CirkusLuna.ClassLibrary.Models.Employee { Role = role }.RoleDescription)</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Employee.HireDate" class="form-label">Ansatdato</label>
+                                <input asp-for="Employee.HireDate" type="date" class="form-control" />
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input asp-for="Employee.IsActive" class="form-check-input" type="checkbox" />
+                                    <label asp-for="Employee.IsActive" class="form-check-label">Aktiv</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="circus-divider" />
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-circus-primary"><i class="bi bi-check-circle me-1"></i>Gem</button>
+                            <a asp-page="Index" class="btn btn-outline-secondary">Annuller</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

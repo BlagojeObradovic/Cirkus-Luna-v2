@@ -1,0 +1,49 @@
+@page
+@model CirkusLuna.Web.Pages.News.CreateModel
+@{ ViewData["Title"] = "Nyt Indlæg"; }
+
+<div class="page-header"><div class="container-xl"><h1><i class="bi bi-plus-circle me-2"></i>Opret Nyhedsindlæg</h1></div></div>
+<div class="container-xl pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="circus-card card">
+                <div class="card-header"><i class="bi bi-newspaper me-2"></i>Nyt Indlæg</div>
+                <div class="card-body p-4">
+                    <form method="post" class="circus-form">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label asp-for="Post.Title" class="form-label">Titel *</label>
+                                <input asp-for="Post.Title" class="form-control" placeholder="Overskrift på indlægget" />
+                                <span asp-validation-for="Post.Title" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Post.Author" class="form-label">Forfatter</label>
+                                <input asp-for="Post.Author" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Post.PublishedDate" class="form-label">Dato</label>
+                                <input asp-for="Post.PublishedDate" type="date" class="form-control" />
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="Post.Content" class="form-label">Indhold *</label>
+                                <textarea asp-for="Post.Content" class="form-control" rows="10" placeholder="Skriv indlæggets indhold her…"></textarea>
+                                <span asp-validation-for="Post.Content" class="text-danger small"></span>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input asp-for="Post.IsPublished" class="form-check-input" type="checkbox" />
+                                    <label asp-for="Post.IsPublished" class="form-check-label">Publiceret (synligt på hjemmesiden)</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="circus-divider" />
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-circus-primary"><i class="bi bi-check-circle me-1"></i>Publicer Indlæg</button>
+                            <a asp-page="Index" class="btn btn-outline-secondary">Annuller</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

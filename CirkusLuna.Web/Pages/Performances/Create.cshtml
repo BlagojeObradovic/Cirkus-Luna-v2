@@ -1,0 +1,73 @@
+@page
+@model CirkusLuna.Web.Pages.Performances.CreateModel
+@{ ViewData["Title"] = "Ny Forestilling"; }
+
+<div class="page-header"><div class="container-xl"><h1><i class="bi bi-plus-circle me-2"></i>Opret Forestilling</h1></div></div>
+
+<div class="container-xl pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="circus-card card">
+                <div class="card-header"><i class="bi bi-star me-2"></i>Forestillingsoplysninger</div>
+                <div class="card-body p-4">
+                    <form method="post" class="circus-form">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label asp-for="Performance.CityId" class="form-label">By *</label>
+                                <select asp-for="Performance.CityId" class="form-select">
+                                    <option value="">– Vælg by –</option>
+                                    @foreach (var city in Model.Cities)
+                                    {
+                                        <option value="@city.Id">@city.Name – @city.Venue</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="Performance.CityId" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Performance.Date" class="form-label">Dato *</label>
+                                <input asp-for="Performance.Date" type="date" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                                <span asp-validation-for="Performance.Date" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Performance.StartTime" class="form-label">Tidspunkt *</label>
+                                <input asp-for="Performance.StartTime" type="time" class="form-control" />
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="Performance.Description" class="form-label">Beskrivelse</label>
+                                <textarea asp-for="Performance.Description" class="form-control" rows="3" placeholder="Beskriv forestillingen…"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Tilknyt Artister</label>
+                                <div class="row g-2">
+                                    @for (int i = 0; i < Model.Artists.Count; i++)
+                                    {
+                                        var artist = Model.Artists[i];
+                                        <div class="col-sm-6 col-md-4">
+                                            <div class="form-check p-2 rounded" style="background:#F8F4EE;border:1px solid #E8D5B7;">
+                                                <input type="checkbox" name="SelectedArtistIds" value="@artist.Id"
+                                                       class="form-check-input" id="artist_@artist.Id" />
+                                                <label class="form-check-label small" for="artist_@artist.Id">
+                                                    <strong>@artist.FullName</strong><br/>
+                                                    <span class="text-muted" style="font-size:0.75rem;">@artist.ArtistTypeDescription</span>
+                                                    @if (artist.IsPermanent)
+                                                    {
+                                                        <span class="badge bg-success ms-1" style="font-size:0.65rem;">Fast</span>
+                                                    }
+                                                </label>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="circus-divider" />
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-circus-primary"><i class="bi bi-check-circle me-1"></i>Opret Forestilling</button>
+                            <a asp-page="Index" class="btn btn-outline-secondary">Annuller</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

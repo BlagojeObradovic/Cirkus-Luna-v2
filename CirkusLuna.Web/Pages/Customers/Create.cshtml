@@ -1,0 +1,72 @@
+@page
+@model CirkusLuna.Web.Pages.Customers.CreateModel
+@{
+    ViewData["Title"] = "Ny Kunde";
+}
+
+<div class="page-header">
+    <div class="container-xl">
+        <h1><i class="bi bi-person-plus me-2"></i>Opret Ny Kunde</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a asp-page="/Index">Forside</a></li>
+                <li class="breadcrumb-item"><a asp-page="Index">Kunder</a></li>
+                <li class="breadcrumb-item active">Opret</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container-xl pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="circus-card card">
+                <div class="card-header"><i class="bi bi-person me-2"></i>Kundeoplysninger</div>
+                <div class="card-body p-4">
+                    <form method="post" class="circus-form">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="Customer.FirstName" class="form-label">Fornavn *</label>
+                                <input asp-for="Customer.FirstName" class="form-control" placeholder="Fornavn" />
+                                <span asp-validation-for="Customer.FirstName" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Customer.LastName" class="form-label">Efternavn *</label>
+                                <input asp-for="Customer.LastName" class="form-control" placeholder="Efternavn" />
+                                <span asp-validation-for="Customer.LastName" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Customer.Email" class="form-label">Email *</label>
+                                <input asp-for="Customer.Email" class="form-control" placeholder="email@eksempel.dk" />
+                                <span asp-validation-for="Customer.Email" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Customer.Phone" class="form-label">Telefon</label>
+                                <input asp-for="Customer.Phone" class="form-control" placeholder="12 34 56 78" />
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="Customer.Address" class="form-label">Adresse</label>
+                                <input asp-for="Customer.Address" class="form-control" placeholder="Gadenavn og husnummer" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Customer.City" class="form-label">By</label>
+                                <input asp-for="Customer.City" class="form-control" placeholder="By" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Customer.PostalCode" class="form-label">Postnummer</label>
+                                <input asp-for="Customer.PostalCode" class="form-control" placeholder="0000" />
+                            </div>
+                        </div>
+                        <hr class="circus-divider" />
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-circus-primary">
+                                <i class="bi bi-check-circle me-1"></i>Opret Kunde
+                            </button>
+                            <a asp-page="Index" class="btn btn-outline-secondary">Annuller</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

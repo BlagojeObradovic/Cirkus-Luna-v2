@@ -1,0 +1,45 @@
+@page "{id:int}"
+@model CirkusLuna.Web.Pages.News.DetailsModel
+@{ ViewData["Title"] = Model.Post?.Title ?? "Nyhed"; }
+
+<div class="page-header">
+    <div class="container-xl">
+        <h1><i class="bi bi-newspaper me-2"></i>@Model.Post?.Title</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a asp-page="/Index">Forside</a></li>
+                <li class="breadcrumb-item"><a asp-page="Index">Nyheder</a></li>
+                <li class="breadcrumb-item active">Artikel</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container-xl pb-5">
+    @if (Model.Post == null)
+    {
+        <div class="alert alert-danger">Indlægget blev ikke fundet.</div>
+    }
+    else
+    {
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="circus-card card">
+                    <div class="card-body p-5">
+                        <div class="d-flex justify-content-between text-muted small mb-3">
+                            <span><i class="bi bi-person me-1"></i>@Model.Post.Author</span>
+                            <span><i class="bi bi-calendar3 me-1"></i>@Model.Post.PublishedDateDisplay</span>
+                        </div>
+                        <hr class="circus-divider" />
+                        <div style="line-height:1.8;white-space:pre-wrap;">@Model.Post.Content</div>
+                        <hr class="circus-divider" />
+                        <div class="d-flex gap-2">
+                            <a asp-page="Edit" asp-route-id="@Model.Post.Id" class="btn btn-circus-outline btn-sm"><i class="bi bi-pencil me-1"></i>Rediger</a>
+                            <a asp-page="Index" class="btn btn-outline-secondary btn-sm">Tilbage til nyheder</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

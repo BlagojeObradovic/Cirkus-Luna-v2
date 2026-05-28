@@ -1,0 +1,80 @@
+@page
+@model CirkusLuna.Web.Pages.Artists.CreateModel
+@{
+    ViewData["Title"] = "Ny Artist";
+}
+
+<div class="page-header">
+    <div class="container-xl">
+        <h1><i class="bi bi-person-plus me-2"></i>Tilføj Artist</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a asp-page="/Index">Forside</a></li>
+                <li class="breadcrumb-item"><a asp-page="Index">Artister</a></li>
+                <li class="breadcrumb-item active">Opret</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container-xl pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="circus-card card">
+                <div class="card-header"><i class="bi bi-stars me-2"></i>Artistoplysninger</div>
+                <div class="card-body p-4">
+                    <form method="post" class="circus-form">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="Artist.FirstName" class="form-label">Fornavn *</label>
+                                <input asp-for="Artist.FirstName" class="form-control" />
+                                <span asp-validation-for="Artist.FirstName" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Artist.LastName" class="form-label">Efternavn *</label>
+                                <input asp-for="Artist.LastName" class="form-control" />
+                                <span asp-validation-for="Artist.LastName" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Artist.Email" class="form-label">Email</label>
+                                <input asp-for="Artist.Email" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Artist.Phone" class="form-label">Telefon</label>
+                                <input asp-for="Artist.Phone" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Artist.ArtistType" class="form-label">Type *</label>
+                                <select asp-for="Artist.ArtistType" class="form-select">
+                                    @foreach (var type in Enum.GetValues<CirkusLuna.ClassLibrary.Models.ArtistType>())
+                                    {
+                                        <option value="@((int)type)">@(new CirkusLuna.ClassLibrary.Models.Artist { ArtistType = type }.ArtistTypeDescription)</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Artist.Nationality" class="form-label">Nationalitet</label>
+                                <input asp-for="Artist.Nationality" class="form-control" />
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="Artist.ActDescription" class="form-label">Beskrivelse af nummer</label>
+                                <textarea asp-for="Artist.ActDescription" class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input asp-for="Artist.IsPermanent" class="form-check-input" type="checkbox" />
+                                    <label asp-for="Artist.IsPermanent" class="form-check-label">Fast artist (optræder i hele sæsonen)</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="circus-divider" />
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-circus-primary"><i class="bi bi-check-circle me-1"></i>Opret Artist</button>
+                            <a asp-page="Index" class="btn btn-outline-secondary">Annuller</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

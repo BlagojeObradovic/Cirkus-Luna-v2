@@ -1,0 +1,76 @@
+@page
+@model CirkusLuna.Web.Pages.Employees.IndexModel
+@{
+    ViewData["Title"] = "Medarbejdere";
+}
+
+<div class="page-header">
+    <div class="container-xl">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1><i class="bi bi-person-badge me-2"></i>Medarbejdere</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Forside</a></li>
+                        <li class="breadcrumb-item active">Medarbejdere</li>
+                    </ol>
+                </nav>
+            </div>
+            <a asp-page="Create" class="btn btn-circus-gold"><i class="bi bi-plus-circle me-1"></i>Ny Medarbejder</a>
+        </div>
+    </div>
+</div>
+
+<div class="container-xl pb-5">
+    <div class="row mb-4">
+        <div class="col-md-5">
+            <form method="get" class="circus-search">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" name="query" value="@Model.Query" class="form-control" placeholder="Søg efter navn eller rolle…" />
+            </form>
+        </div>
+    </div>
+
+    @if (Model.Employees.Any())
+    {
+        <div class="table-responsive">
+            <table class="table circus-table">
+                <thead>
+                    <tr>
+                        <th>Navn</th>
+                        <th>Email</th>
+                        <th>Telefon</th>
+                        <th>Rolle</th>
+                        <th>Handlinger</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Employees.Count; i++)
+                    {
+                        var e = Model.Employees[i];
+                        <tr>
+                            <td><strong>@e.FullName</strong></td>
+                            <td>@e.Email</td>
+                            <td>@e.Phone</td>
+                            <td><span class="badge-circus-regular">@e.RoleDescription</span></td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <a asp-page="Edit" asp-route-id="@e.Id" class="btn btn-sm btn-circus-outline"><i class="bi bi-pencil"></i></a>
+                                    <a asp-page="Delete" asp-route-id="@e.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-icon">👷</div>
+            <h5>Ingen medarbejdere fundet</h5>
+            <a asp-page="Create" class="btn btn-circus-primary">Tilføj medarbejder</a>
+        </div>
+    }
+</div>

@@ -1,0 +1,319 @@
+/* Enkel skolevenlig styling:
+   - Bevidst kort og let at forklare
+   - Genbruger eksisterende class-navne fra views */
+
+:root {
+    --circus-red: #b02a37;
+    --circus-gold: #d4a017;
+    --circus-dark: #1f2937;
+    --circus-blue: #1f4b73;
+    --circus-deep-red: #7f1d1d;
+    --circus-bg: #f8f9fa;
+}
+
+body {
+    background: var(--circus-bg);
+    color: #212529;
+}
+
+/* Gamle sider bruger stadig dette layoutnavn */
+.page-header {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 1.6rem;
+}
+
+.page-header .breadcrumb {
+    margin-top: 0.4rem;
+}
+
+.page-header .breadcrumb-item,
+.page-header .breadcrumb-item a {
+    color: #6c757d;
+}
+
+/* Enkelt "hero" område */
+.circus-hero {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    margin-bottom: 1.25rem;
+}
+
+.circus-hero h1 {
+    margin-bottom: 0.5rem;
+}
+
+.circus-stripe {
+    height: 4px;
+    background: #e5e7eb;
+    margin: 1.5rem 0;
+}
+
+.circus-section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.circus-section-title.centered {
+    text-align: center;
+}
+
+/* Enkle kort */
+.circus-card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* Knapper (bevarer class-navne fra eksisterende markup) */
+.btn-circus-primary {
+    background: var(--circus-red);
+    border-color: var(--circus-red);
+    color: #fff;
+}
+
+.btn-circus-primary:hover {
+    background: #8f222d;
+    border-color: #8f222d;
+    color: #fff;
+}
+
+.btn-circus-gold {
+    background: var(--circus-gold);
+    border-color: var(--circus-gold);
+    color: #111827;
+}
+
+.btn-circus-gold:hover {
+    background: #bf8f14;
+    border-color: #bf8f14;
+    color: #111827;
+}
+
+.btn-circus-outline {
+    background: transparent;
+    border: 1px solid #adb5bd;
+    color: #212529;
+}
+
+.btn-circus-outline:hover {
+    background: #f1f3f5;
+    border-color: #868e96;
+    color: #212529;
+}
+
+/* Nogle gamle knapper har text-white/border-white sat i markup */
+.btn-circus-outline.text-white,
+.btn-circus-outline.border-white {
+    color: #212529 !important;
+    border-color: #adb5bd !important;
+}
+
+/* Tabeller/forms */
+.circus-table thead th {
+    background: #f1f3f5;
+    border-bottom-width: 1px;
+}
+
+.circus-form .form-label {
+    font-weight: 600;
+}
+
+.circus-divider {
+    margin: 1rem 0;
+    border: 0;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Korttyper på eksisterende sider */
+.performance-card,
+.news-card {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.news-card .news-header {
+    background: #f1f3f5;
+    border-bottom: 1px solid #dee2e6;
+    padding: 0.5rem 0.75rem;
+    color: #495057;
+    font-size: 0.85rem;
+}
+
+.performance-date-badge {
+    background: #f1f3f5;
+    border-right: 1px solid #dee2e6;
+    color: #212529;
+    min-width: 86px;
+    text-align: center;
+    padding: 0.6rem;
+}
+
+.performance-date-badge .day {
+    font-size: 1.35rem;
+    line-height: 1.1;
+    font-weight: 700;
+}
+
+.performance-date-badge .month {
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    color: #6c757d;
+}
+
+.availability-bar {
+    height: 8px;
+    border-radius: 999px;
+    background: #e9ecef;
+    overflow: hidden;
+}
+
+.availability-fill {
+    height: 100%;
+}
+
+.availability-fill.high {
+    background: #198754;
+}
+
+.availability-fill.medium {
+    background: #ffc107;
+}
+
+.availability-fill.low {
+    background: #dc3545;
+}
+
+/* Små badges */
+.badge-circus-regular,
+.badge-circus-children,
+.badge-circus-vip {
+    display: inline-block;
+    padding: 0.35rem 0.5rem;
+    border-radius: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-circus-regular {
+    background: #e7f1ff;
+    color: #084298;
+}
+
+.badge-circus-children {
+    background: #e8f7ed;
+    color: #146c43;
+}
+
+.badge-circus-vip {
+    background: #fff3cd;
+    color: #664d03;
+}
+
+.alert-circus {
+    border-left: 4px solid #198754;
+}
+
+/* Søgning */
+.circus-search {
+    position: relative;
+}
+
+.circus-search .search-icon {
+    display: none;
+}
+
+/* Sædeoversigt */
+.circus-ring {
+    background: #f1f3f5;
+    border: 1px solid #dee2e6;
+    border-radius: 999px;
+    text-align: center;
+    padding: 0.4rem 0.75rem;
+    margin: 0 auto 1rem;
+    max-width: 220px;
+    font-weight: 600;
+}
+
+.seat-row-label {
+    width: 30px;
+    display: inline-block;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.seat {
+    width: 30px;
+    height: 30px;
+    border-radius: 0.3rem 0.3rem 0 0;
+    margin: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 600;
+}
+
+.seat.available {
+    background: #e9ecef;
+    border: 1px solid #ced4da;
+    color: #495057;
+}
+
+.seat.reserved {
+    background: #f8d7da;
+    border: 1px solid #f5c2c7;
+    color: #842029;
+}
+
+.seat.vip-available {
+    background: #fff3cd;
+    border: 1px solid #ffecb5;
+    color: #664d03;
+}
+
+.seat.vip-reserved {
+    background: #e2e3e5;
+    border: 1px solid #d3d6d8;
+    color: #41464b;
+}
+
+.seat-legend {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.seat-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+}
+
+.seat-legend-box {
+    width: 16px;
+    height: 16px;
+    border-radius: 0.2rem;
+}
+
+.empty-state {
+    background: #fff;
+    border: 1px dashed #ced4da;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+}

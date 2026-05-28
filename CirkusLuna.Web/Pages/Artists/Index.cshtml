@@ -1,0 +1,99 @@
+@page
+@model CirkusLuna.Web.Pages.Artists.IndexModel
+@{
+    ViewData["Title"] = "Artister";
+}
+
+<div class="page-header">
+    <div class="container-xl">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1><i class="bi bi-stars me-2"></i>Artister</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Forside</a></li>
+                        <li class="breadcrumb-item active">Artister</li>
+                    </ol>
+                </nav>
+            </div>
+            <a asp-page="Create" class="btn btn-circus-gold">
+                <i class="bi bi-plus-circle me-1"></i>Ny Artist
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container-xl pb-5">
+    <div class="row mb-4">
+        <div class="col-md-5">
+            <form method="get" class="circus-search">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" name="query" value="@Model.Query" class="form-control" placeholder="Søg efter navn, type eller nationalitet…" />
+            </form>
+        </div>
+        <div class="col-md-4">
+            <form method="get">
+                <input type="hidden" name="query" value="@Model.Query" />
+                <select name="typeFilter" class="form-select" onchange="this.form.submit()">
+                    <option value="">Alle typer</option>
+                    @foreach (var type in Enum.GetValues<CirkusLuna.ClassLibrary.Models.ArtistType>())
+                    {
+                        <option value="@((int)type)" selected="@(Model.TypeFilter == (int)type)">
+                            @(new CirkusLuna.ClassLibrary.Models.Artist { ArtistType = type }.ArtistTypeDescription)
+                        </option>
+                    }
+                </select>
+            </form>
+        </div>
+    </div>
+
+    @if (Model.Artists.Any())
+    {
+        <div class="row g-4">
+            @foreach (var artist in Model.Artists)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="circus-card card h-100">
+                        <div class="card-header @(artist.IsPermanent ? "" : "gold")">
+                            <i class="bi bi-person-circle me-2"></i>@artist.FullName
+                            @if (artist.IsPermanent)
+                            {
+                                <span class="badge bg-light text-dark ms-2 small">Fast</span>
+                            }
+                            else
+                            {
+                                <span class="badge ms-2 small" style="background:rgba(255,255,255,0.3)">Gæst</span>
+                            }
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="badge-circus-regular">@artist.ArtistTypeDescription</span>
+                                <span class="small text-muted"><i class="bi bi-globe me-1"></i>@artist.Nationality</span>
+                            </div>
+                            <p class="card-text small text-muted">@(artist.ActDescription.Length > 100 ? artist.ActDescription[..100] + "…" : artist.ActDescription)</p>
+                            <div class="small text-muted">
+                                <i class="bi bi-calendar-check me-1"></i>@artist.Performances.Count forestilling(er)
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent d-flex gap-2">
+                            <a asp-page="Edit" asp-route-id="@artist.Id" class="btn btn-sm btn-circus-outline">
+                                <i class="bi bi-pencil me-1"></i>Rediger
+                            </a>
+                            <a asp-page="Delete" asp-route-id="@artist.Id" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-icon">🎭</div>
+            <h5>Ingen artister fundet</h5>
+            <a asp-page="Create" class="btn btn-circus-primary">Tilføj første artist</a>
+        </div>
+    }
+</div>

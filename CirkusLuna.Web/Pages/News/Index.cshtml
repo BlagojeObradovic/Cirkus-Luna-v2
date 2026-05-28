@@ -1,0 +1,76 @@
+@page
+@model CirkusLuna.Web.Pages.News.IndexModel
+@{
+    ViewData["Title"] = "Nyheder";
+}
+
+<div class="page-header">
+    <div class="container-xl">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1><i class="bi bi-newspaper me-2"></i>Nyheder & Blog</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Forside</a></li>
+                        <li class="breadcrumb-item active">Nyheder</li>
+                    </ol>
+                </nav>
+            </div>
+            <a asp-page="Create" class="btn btn-circus-gold"><i class="bi bi-plus-circle me-1"></i>Nyt Indlæg</a>
+        </div>
+    </div>
+</div>
+
+<div class="container-xl pb-5">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-circus alert-success alert-dismissible fade show mb-4">
+            <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row mb-4">
+        <div class="col-md-5">
+            <form method="get" class="circus-search">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" name="query" value="@Model.Query" class="form-control" placeholder="Søg i nyheder…" />
+            </form>
+        </div>
+    </div>
+
+    @if (Model.Posts.Any())
+    {
+        <div class="row g-4">
+            @for (int i = 0; i < Model.Posts.Count; i++)
+            {
+                var post = Model.Posts[i];
+                <div class="col-md-6">
+                    <div class="news-card h-100">
+                        <div class="news-header d-flex justify-content-between">
+                            <span><i class="bi bi-calendar3 me-1"></i>@post.PublishedDateDisplay</span>
+                            <span><i class="bi bi-person me-1"></i>@post.Author</span>
+                        </div>
+                        <div class="p-4">
+                            <h4 style="font-family:'Playfair Display',serif;color:var(--circus-deep-red);">@post.Title</h4>
+                            <p class="text-muted">@post.Summary</p>
+                            <div class="d-flex gap-2 mt-3">
+                                <a asp-page="Details" asp-route-id="@post.Id" class="btn btn-circus-primary btn-sm">Læs mere</a>
+                                <a asp-page="Edit" asp-route-id="@post.Id" class="btn btn-circus-outline btn-sm"><i class="bi bi-pencil"></i></a>
+                                <a asp-page="Delete" asp-route-id="@post.Id" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-icon">📰</div>
+            <h5>Ingen nyheder fundet</h5>
+            <a asp-page="Create" class="btn btn-circus-primary">Opret første indlæg</a>
+        </div>
+    }
+</div>

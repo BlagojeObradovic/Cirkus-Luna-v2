@@ -1,0 +1,47 @@
+@page "{id:int}"
+@model CirkusLuna.Web.Pages.TicketTypes.EditModel
+@{ ViewData["Title"] = "Rediger Billettype"; }
+
+<div class="page-header"><div class="container-xl"><h1><i class="bi bi-pencil me-2"></i>Rediger Billettype</h1></div></div>
+<div class="container-xl pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="circus-card card">
+                <div class="card-header"><i class="bi bi-tag me-2"></i>Rediger Billettype</div>
+                <div class="card-body p-4">
+                    <form method="post" class="circus-form">
+                        <input type="hidden" asp-for="Ticket.Id" />
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="Ticket.Category" class="form-label">Kategori</label>
+                                <select asp-for="Ticket.Category" class="form-select">
+                                    <option value="0">Almindelig</option>
+                                    <option value="1">Børnebillet</option>
+                                    <option value="2">VIP</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Ticket.Name" class="form-label">Navn *</label>
+                                <input asp-for="Ticket.Name" class="form-control" />
+                                <span asp-validation-for="Ticket.Name" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Ticket.Price" class="form-label">Pris (kr)</label>
+                                <input asp-for="Ticket.Price" type="number" step="0.01" class="form-control" />
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="Ticket.Description" class="form-label">Beskrivelse</label>
+                                <textarea asp-for="Ticket.Description" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <hr class="circus-divider" />
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-circus-primary"><i class="bi bi-check-circle me-1"></i>Gem</button>
+                            <a asp-page="Index" class="btn btn-outline-secondary">Annuller</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

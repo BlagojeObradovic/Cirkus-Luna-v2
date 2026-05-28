@@ -1,0 +1,146 @@
+@page "{id:int}"
+@model CirkusLuna.Web.Pages.Performances.DetailsModel
+@{
+    ViewData["Title"] = $"Forestilling – {Model.Performance?.City?.Name}";
+}
+
+<div class="page-header">
+    <div class="container-xl">
+        <h1><i class="bi bi-star me-2"></i>@(Model.Performance?.City?.Name ?? "Forestilling")</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a asp-page="/Index">Forside</a></li>
+                <li class="breadcrumb-item"><a asp-page="Index">Forestillinger</a></li>
+                <li class="breadcrumb-item active">Detaljer</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container-xl pb-5">
+    @if (Model.Performance == null)
+    {
+        <div class="alert alert-danger">Forestillingen blev ikke fundet.</div>
+    }
+    else
+    {
+        var p = Model.Performance;
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="circus-card card mb-4">
+                    <div class="card-header"><i class="bi bi-info-circle me-2"></i>Forestillingsdetaljer</div>
+                    <div class="card-body p-4">
+                        <div class="row g-3 mb-3">
+                            <div class="col-sm-6">
+                                <div class="small text-muted">By</div>
+                                <div class="fw-bold fs-5"><i class="bi bi-geo-alt-fill text-danger me-1"></i>@p.City?.Name</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="small text-muted">Spillested</div>
+                                <div class="fw-bold">@p.City?.Venue</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="small text-muted">Dato</div>
+                                <div class="fw-bold"><i class="bi bi-calendar3 me-1"></i>@p.DateDisplay</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="small text-muted">Tidspunkt</div>
+                                <div class="fw-bold"><i class="bi bi-clock me-1"></i>@p.TimeDisplay</div>
+                            </div>
+                        </div>
+                        <p class="text-muted">@p.Description</p>
+
+                        @if (!p.IsFuture)
+                        {
+                            <div class="alert alert-warning alert-circus"><i class="bi bi-clock-history me-2"></i>Denne forestilling er allerede afholdt.</div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Artists -->
+                <div class="circus-card card mb-4">
+                    <div class="card-header"><i class="bi bi-stars me-2"></i>Optræder ved forestillingen (@p.Artists.Count)</div>
+                    <div class="card-body p-3">
+                        @if (p.Artists.Any())
+                        {
+                            <div class="row g-2">
+                                @for (int i = 0; i < p.Artists.Count; i++)
+                                {
+                                    var artist = p.Artists[i];
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="d-flex align-items-center gap-2 p-2 rounded" style="background:#F8F4EE;">
+                                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white"
+                                                 style="width:36px;height:36px;background:linear-gradient(135deg,var(--circus-red),var(--circus-deep-red));font-size:0.8rem;flex-shrink:0;">
+                                                @artist.FirstName[0]@artist.LastName[0]
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold small">@artist.FullName</div>
+                                                <div class="small text-muted">@artist.ArtistTypeDescription</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted small mb-0">Ingen artister tilknyttet endnu.</p>
+                        }
+                    </div>
+                </div>
+
+                <!-- Seat Map Link -->
+                <a asp-page="/Seats/Index" asp-route-performanceId="@p.Id" class="btn btn-circus-outline">
+                    <i class="bi bi-grid-3x3 me-2"></i>Se siddepladseoversigt
+                </a>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="circus-card card mb-4">
+                    <div class="card-header gold"><i class="bi bi-speedometer me-2"></i>Kapacitet</div>
+                    <div class="card-body p-3">
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span>Almindelige pladser</span>
+                                <strong>@p.AvailableRegularSeats / @Performance.MaxRegularSeats ledige</strong>
+                            </div>
+                            <div class="availability-bar">
+                                <div class="availability-fill @(p.AvailableRegularSeats > 75 ? "high" : p.AvailableRegularSeats > 25 ? "medium" : "low")"
+                                     style="width:@(p.AvailableRegularSeats * 100 / Performance.MaxRegularSeats)%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span>VIP-pladser</span>
+                                <strong>@p.AvailableVipSeats / @Performance.MaxVipSeats ledige</strong>
+                            </div>
+                            <div class="availability-bar">
+                                <div class="availability-fill @(p.AvailableVipSeats > 5 ? "high" : p.AvailableVipSeats > 2 ? "medium" : "low")"
+                                     style="width:@(p.AvailableVipSeats * 100 / Performance.MaxVipSeats)%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @if (p.IsFuture)
+                {
+                    <div class="circus-card card">
+                        <div class="card-header"><i class="bi bi-ticket me-2"></i>Reservér Billetter</div>
+                        <div class="card-body p-3 text-center">
+                            <p class="small text-muted mb-3">Bestil din billet til forestillingen i @p.City?.Name den @p.DateDisplay</p>
+                            <a asp-page="/Reservations/Create" asp-route-performanceId="@p.Id" class="btn btn-circus-gold w-100">
+                                <i class="bi bi-ticket-perforated me-2"></i>Bestil Billet
+                            </a>
+                        </div>
+                    </div>
+                }
+
+                <div class="mt-3 d-flex gap-2">
+                    <a asp-page="Edit" asp-route-id="@p.Id" class="btn btn-circus-outline btn-sm"><i class="bi bi-pencil me-1"></i>Rediger</a>
+                    <a asp-page="Delete" asp-route-id="@p.Id" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash me-1"></i>Slet</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

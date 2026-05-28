@@ -1,0 +1,132 @@
+@page
+@model CirkusLuna.Web.Pages.Performances.IndexModel
+@{
+    ViewData["Title"] = "Forestillinger";
+}
+
+<div class="page-header">
+    <div class="container-xl">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1><i class="bi bi-star me-2"></i>Forestillinger</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Forside</a></li>
+                        <li class="breadcrumb-item active">Forestillinger</li>
+                    </ol>
+                </nav>
+            </div>
+            <a asp-page="Create" class="btn btn-circus-gold"><i class="bi bi-plus-circle me-1"></i>Ny Forestilling</a>
+        </div>
+    </div>
+</div>
+
+<div class="container-xl pb-5">
+    <!-- Filters -->
+    <div class="circus-card card mb-4">
+        <div class="card-body p-3">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold">By</label>
+                    <input type="text" name="city" value="@Model.CityFilter" class="form-control form-control-sm" placeholder="Filtrer på by…" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold">Dato</label>
+                    <input type="date" name="date" value="@(Model.DateFilter?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold">Billettype</label>
+                    <select name="ticketCategory" class="form-select form-select-sm">
+                        <option value="">Alle typer</option>
+                        <option value="0" selected="@(Model.TicketCategoryFilter == 0)">Almindelig</option>
+                        <option value="1" selected="@(Model.TicketCategoryFilter == 1)">Børn</option>
+                        <option value="2" selected="@(Model.TicketCategoryFilter == 2)">VIP</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-check mt-2">
+                        <input type="checkbox" name="hasSeats" value="true" class="form-check-input" id="hasSeats" @(Model.HasSeatsFilter == true ? "checked" : "") />
+                        <label class="form-check-label small" for="hasSeats">Kun med ledige pladser</label>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-circus-primary btn-sm w-100"><i class="bi bi-funnel"></i></button>
+                </div>
+            </form>
+            @if (Model.IsFiltered)
+            {
+                <div class="mt-2">
+                    <a asp-page="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-x me-1"></i>Ryd filtre</a>
+                    <span class="text-muted small ms-2">@Model.Performances.Count resultat(er)</span>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (Model.Performances.Any())
+    {
+        <div class="row g-4">
+            @for (int i = 0; i < Model.Performances.Count; i++)
+            {
+                var p = Model.Performances[i];
+                <div class="col-md-6 col-lg-4">
+                    <div class="performance-card card h-100">
+                        <div class="d-flex">
+                            <div class="performance-date-badge flex-shrink-0">
+                                <div class="day">@p.Date.Day</div>
+                                <div class="month">@p.Date.ToString("MMM", new System.Globalization.CultureInfo("da-DK"))</div>
+                                <div style="font-size:0.7rem;opacity:0.75;">@p.Date.Year</div>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="mb-1" style="font-family:'Playfair Display',serif;">
+                                    <i class="bi bi-geo-alt-fill text-danger me-1"></i>@(p.City?.Name ?? "–")
+                                </h6>
+                                <div class="small text-muted mb-2">
+                                    <i class="bi bi-clock me-1"></i>@p.TimeDisplay
+                                    &nbsp;·&nbsp;
+                                    <i class="bi bi-person-fill me-1"></i>@p.Artists.Count artister
+                                </div>
+
+                                <!-- Seat availability -->
+                                <div class="small mb-1">
+                                    <span class="text-muted">Pladser: </span>
+                                    <strong>@p.AvailableRegularSeats</strong><span class="text-muted">/150</span>
+                                    <span class="ms-2 badge-circus-vip">VIP: @p.AvailableVipSeats/10</span>
+                                </div>
+
+                                @if (!p.IsFuture)
+                                {
+                                    <span class="badge bg-secondary mb-2">Afholdt</span>
+                                }
+
+                                <div class="d-flex gap-1 flex-wrap">
+                                    <a asp-page="Details" asp-route-id="@p.Id" class="btn btn-sm btn-circus-outline"><i class="bi bi-eye me-1"></i>Detaljer</a>
+                                    <a asp-page="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+                                    @if (p.IsFuture)
+                                    {
+                                        <a asp-page="/Reservations/Create" asp-route-performanceId="@p.Id" class="btn btn-sm btn-circus-gold"><i class="bi bi-ticket me-1"></i>Book</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-icon">🎪</div>
+            <h5>Ingen forestillinger fundet</h5>
+            @if (Model.IsFiltered)
+            {
+                <p class="text-muted">Prøv at ændre dine søgekriterier.</p>
+            }
+            else
+            {
+                <a asp-page="Create" class="btn btn-circus-primary">Opret første forestilling</a>
+            }
+        </div>
+    }
+</div>

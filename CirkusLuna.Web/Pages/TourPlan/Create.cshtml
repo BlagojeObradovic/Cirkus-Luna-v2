@@ -1,0 +1,39 @@
+@page
+@model CirkusLuna.Web.Pages.TourPlan.CreateModel
+@{ ViewData["Title"] = "Tilføj By"; }
+
+<div class="page-header"><div class="container-xl"><h1><i class="bi bi-plus-circle me-2"></i>Tilføj By til Turnéen</h1></div></div>
+<div class="container-xl pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="circus-card card">
+                <div class="card-header"><i class="bi bi-geo-alt me-2"></i>Byoplysninger</div>
+                <div class="card-body p-4">
+                    <form method="post" class="circus-form">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label asp-for="City.Name" class="form-label">Bynavn *</label>
+                                <input asp-for="City.Name" class="form-control" placeholder="f.eks. Aarhus" />
+                                <span asp-validation-for="City.Name" class="text-danger small"></span>
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="City.Venue" class="form-label">Spillested *</label>
+                                <input asp-for="City.Venue" class="form-control" placeholder="f.eks. Fælledparken" />
+                                <span asp-validation-for="City.Venue" class="text-danger small"></span>
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="City.Address" class="form-label">Adresse</label>
+                                <input asp-for="City.Address" class="form-control" placeholder="Gadenavn 1, 0000 By" />
+                            </div>
+                        </div>
+                        <hr class="circus-divider" />
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-circus-primary"><i class="bi bi-check-circle me-1"></i>Tilføj By</button>
+                            <a asp-page="Index" class="btn btn-outline-secondary">Annuller</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

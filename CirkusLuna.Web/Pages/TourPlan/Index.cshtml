@@ -1,0 +1,96 @@
+@page
+@model CirkusLuna.Web.Pages.TourPlan.IndexModel
+@{
+    ViewData["Title"] = "Turnéplan";
+}
+
+<div class="page-header">
+    <div class="container-xl">
+        <h1><i class="bi bi-map me-2"></i>Turnéplan @DateTime.Now.Year</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a asp-page="/Index">Forside</a></li>
+                <li class="breadcrumb-item active">Turnéplan</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container-xl pb-5">
+    <div class="row mb-4 g-3">
+        <div class="col-md-5">
+            <form method="get" class="circus-search">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" name="query" value="@Model.Query" class="form-control" placeholder="Søg efter by eller spillested…" />
+            </form>
+        </div>
+        <div class="col-md-auto d-flex align-items-center">
+            <span class="badge-circus-regular ms-0">Byer sorteret A–Z</span>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(TempData["Success"]?.ToString()))
+    {
+        <div class="alert alert-circus alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="circus-section-title mb-0">@Model.Cities.Count byer på turnéen</h2>
+        <a asp-page="Create" class="btn btn-circus-gold btn-sm"><i class="bi bi-plus-circle me-1"></i>Tilføj By</a>
+    </div>
+
+    @if (Model.Cities.Any())
+    {
+        @for (int i = 0; i < Model.Cities.Count; i++)
+        {
+            var city = Model.Cities[i];
+            <div class="tour-city-card">
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                    <div>
+                        <div class="d-flex align-items-center gap-3 mb-1">
+                            <span class="badge rounded-pill" style="background:var(--circus-red);color:white;font-size:0.75rem;">@(i+1)</span>
+                            <h5 class="tour-city-name mb-0">
+                                <i class="bi bi-geo-alt-fill me-1" style="color:var(--circus-gold);"></i>@city.Name
+                            </h5>
+                        </div>
+                        <div class="text-muted small ms-4">
+                            <i class="bi bi-building me-1"></i>@city.Venue
+                            &nbsp;·&nbsp;
+                            <i class="bi bi-pin-map me-1"></i>@city.Address
+                        </div>
+                        @if (city.Performances.Any())
+                        {
+                            <div class="ms-4 mt-2 d-flex flex-wrap gap-2">
+                                @for (int j = 0; j < city.Performances.Count; j++)
+                                {
+                                    var p = city.Performances[j];
+                                    <a asp-page="/Performances/Details" asp-route-id="@p.Id"
+                                       class="badge text-decoration-none"
+                                       style="background:linear-gradient(135deg,var(--circus-dark),var(--circus-blue));color:var(--circus-gold);padding:0.4em 0.7em;">
+                                        <i class="bi bi-calendar3 me-1"></i>@p.Date.ToString("dd. MMM", new System.Globalization.CultureInfo("da-DK")) @p.TimeDisplay
+                                    </a>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div class="d-flex gap-2 flex-shrink-0">
+                        <span class="badge bg-light text-dark border">@city.Performances.Count forestilling(er)</span>
+                        <a asp-page="Edit" asp-route-id="@city.Id" class="btn btn-sm btn-circus-outline"><i class="bi bi-pencil"></i></a>
+                        <a asp-page="Delete" asp-route-id="@city.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-icon">🗺️</div>
+            <h5>Ingen byer fundet</h5>
+            <a asp-page="Create" class="btn btn-circus-primary">Tilføj første by</a>
+        </div>
+    }
+</div>

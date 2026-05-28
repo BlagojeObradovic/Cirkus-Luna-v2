@@ -1,0 +1,177 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Forside";
+}
+
+<!-- Hero Section -->
+<section class="circus-hero">
+    <div class="container-xl text-center position-relative">
+        <span class="hero-stars">★ ★ ★ ★ ★</span>
+        <h1>Cirkus Luna</h1>
+        <p class="hero-subtitle">Danmarks mest magiske omrejsende cirkus</p>
+        <p class="lead mb-4 opacity-75">Sæson @DateTime.Now.Year · 1. maj – 31. august · Over 20 byer i hele Danmark</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a asp-page="/TourPlan/Index" class="btn btn-circus-gold btn-lg">
+                <i class="bi bi-map me-2"></i>Se Turnéplanen
+            </a>
+            <a asp-page="/Reservations/Create" class="btn btn-circus-outline btn-lg text-white border-white">
+                <i class="bi bi-ticket me-2"></i>Bestil Billetter
+            </a>
+        </div>
+    </div>
+</section>
+
+<div class="circus-stripe"></div>
+
+<!-- Stats -->
+<section class="py-4 bg-white shadow-sm">
+    <div class="container-xl">
+        <div class="row g-3 text-center">
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number">@Model.TotalCities</div>
+                    <div class="stat-label"><i class="bi bi-geo-alt me-1"></i>Byer på turnéen</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card gold">
+                    <div class="stat-number">@Model.TotalPerformances</div>
+                    <div class="stat-label"><i class="bi bi-star me-1"></i>Forestillinger</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card purple">
+                    <div class="stat-number">@Model.TotalArtists</div>
+                    <div class="stat-label"><i class="bi bi-stars me-1"></i>Artister</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card green">
+                    <div class="stat-number">@Model.UpcomingPerformances</div>
+                    <div class="stat-label"><i class="bi bi-calendar-check me-1"></i>Kommende forestillinger</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Upcoming Performances -->
+<section class="py-5">
+    <div class="container-xl">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="circus-section-title mb-0">Kommende Forestillinger</h2>
+            <a asp-page="/Performances/Index" class="btn btn-circus-outline">Se alle <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+
+        @if (Model.NextPerformances.Any())
+        {
+            <div class="row g-4">
+                @foreach (var perf in Model.NextPerformances)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="performance-card card h-100">
+                            <div class="d-flex">
+                                <div class="performance-date-badge flex-shrink-0">
+                                    <div class="day">@perf.Date.Day</div>
+                                    <div class="month">@perf.Date.ToString("MMM", new System.Globalization.CultureInfo("da-DK"))</div>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title mb-1" style="font-family:'Playfair Display',serif;">
+                                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>@(perf.City?.Name ?? "Ukendt by")
+                                    </h5>
+                                    <p class="text-muted small mb-2">
+                                        <i class="bi bi-clock me-1"></i>kl. @perf.TimeDisplay
+                                        &nbsp;·&nbsp;
+                                        <i class="bi bi-people me-1"></i>@perf.AvailableRegularSeats ledige pladser
+                                    </p>
+                                    <p class="card-text small text-muted mb-3">@(perf.Description.Length > 80 ? perf.Description[..80] + "…" : perf.Description)</p>
+                                    <div class="d-flex gap-2">
+                                        <a asp-page="/Performances/Details" asp-route-id="@perf.Id" class="btn btn-circus-primary btn-sm">
+                                            <i class="bi bi-eye me-1"></i>Se mere
+                                        </a>
+                                        <a asp-page="/Reservations/Create" asp-route-performanceId="@perf.Id" class="btn btn-circus-gold btn-sm">
+                                            <i class="bi bi-ticket me-1"></i>Bestil
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <div class="empty-icon">🎪</div>
+                <p>Ingen kommende forestillinger fundet.</p>
+            </div>
+        }
+    </div>
+</section>
+
+<div class="circus-stripe"></div>
+
+<!-- News Section -->
+<section class="py-5" style="background: #F8F4EE;">
+    <div class="container-xl">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="circus-section-title mb-0">Seneste Nyheder</h2>
+            <a asp-page="/News/Index" class="btn btn-circus-outline">Alle nyheder <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+        <div class="row g-4">
+            @foreach (var post in Model.LatestNews)
+            {
+                <div class="col-md-6 col-lg-3">
+                    <div class="news-card h-100">
+                        <div class="news-header">
+                            <i class="bi bi-calendar3 me-1"></i>@post.PublishedDateDisplay
+                        </div>
+                        <div class="p-3">
+                            <h6 style="font-family:'Playfair Display',serif; color: #1A1A2E;">@post.Title</h6>
+                            <p class="small text-muted">@post.Summary</p>
+                            <a asp-page="/News/Details" asp-route-id="@post.Id" class="btn btn-sm btn-circus-outline">Læs mere</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Ticket Types -->
+<section class="py-5">
+    <div class="container-xl">
+        <h2 class="circus-section-title text-center centered mb-5">Vores Billettyper</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4">
+                <div class="circus-card card h-100 text-center p-4">
+                    <div class="mb-3" style="font-size:3rem;">🎟️</div>
+                    <h4 style="font-family:'Playfair Display',serif;">Voksen</h4>
+                    <div class="display-6 fw-bold" style="color: var(--circus-red);">175 kr</div>
+                    <p class="text-muted mt-2">Almindelig billet med sæde i den store ring</p>
+                    <a asp-page="/Reservations/Create" class="btn btn-circus-primary mt-auto">Bestil nu</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="circus-card card h-100 text-center p-4">
+                    <div class="mb-3" style="font-size:3rem;">🎠</div>
+                    <h4 style="font-family:'Playfair Display',serif;">Børn</h4>
+                    <div class="display-6 fw-bold" style="color: #27AE60;">95 kr</div>
+                    <p class="text-muted mt-2">For børn op til 12 år</p>
+                    <a asp-page="/Reservations/Create" class="btn btn-circus-primary mt-auto">Bestil nu</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="circus-card card h-100 text-center p-4" style="border-top: 4px solid var(--circus-gold);">
+                    <div class="mb-3" style="font-size:3rem;">👑</div>
+                    <h4 style="font-family:'Playfair Display',serif;">VIP</h4>
+                    <div class="display-6 fw-bold" style="color: #8B6914;">350 kr</div>
+                    <p class="text-muted mt-2">Bedste pladser + eksklusiv VIP-oplevelse</p>
+                    <a asp-page="/Reservations/Create" class="btn btn-circus-gold mt-auto">Bestil VIP</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

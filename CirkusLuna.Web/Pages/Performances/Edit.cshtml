@@ -1,0 +1,68 @@
+@page "{id:int}"
+@model CirkusLuna.Web.Pages.Performances.EditModel
+@{ ViewData["Title"] = "Rediger Forestilling"; }
+
+<div class="page-header"><div class="container-xl"><h1><i class="bi bi-pencil me-2"></i>Rediger Forestilling</h1></div></div>
+
+<div class="container-xl pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="circus-card card">
+                <div class="card-header"><i class="bi bi-star me-2"></i>Rediger Oplysninger</div>
+                <div class="card-body p-4">
+                    <form method="post" class="circus-form">
+                        <input type="hidden" asp-for="Performance.Id" />
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label asp-for="Performance.CityId" class="form-label">By *</label>
+                                <select asp-for="Performance.CityId" class="form-select">
+                                    @foreach (var city in Model.Cities)
+                                    {
+                                        <option value="@city.Id">@city.Name – @city.Venue</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Performance.Date" class="form-label">Dato *</label>
+                                <input asp-for="Performance.Date" type="date" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Performance.StartTime" class="form-label">Tidspunkt</label>
+                                <input asp-for="Performance.StartTime" type="time" class="form-control" />
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="Performance.Description" class="form-label">Beskrivelse</label>
+                                <textarea asp-for="Performance.Description" class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Artister</label>
+                                <div class="row g-2">
+                                    @for (int i = 0; i < Model.Artists.Count; i++)
+                                    {
+                                        var artist = Model.Artists[i];
+                                        <div class="col-sm-6 col-md-4">
+                                            <div class="form-check p-2 rounded" style="background:#F8F4EE;border:1px solid #E8D5B7;">
+                                                <input type="checkbox" name="SelectedArtistIds" value="@artist.Id"
+                                                       class="form-check-input" id="artist_@artist.Id"
+                                                       @(Model.SelectedArtistIds.Contains(artist.Id) ? "checked" : "") />
+                                                <label class="form-check-label small" for="artist_@artist.Id">
+                                                    <strong>@artist.FullName</strong><br/>
+                                                    <span class="text-muted" style="font-size:0.75rem;">@artist.ArtistTypeDescription</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="circus-divider" />
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-circus-primary"><i class="bi bi-check-circle me-1"></i>Gem</button>
+                            <a asp-page="Index" class="btn btn-outline-secondary">Annuller</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
